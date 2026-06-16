@@ -1,0 +1,1833 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Executive Hub | Strategy & Impact</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #050505;
+        --text-main: #e0e0e0;
+        --neon-pink: #ff007f;
+        --neon-blue: #00ffff;
+        --neon-green: #39ff14;
+        --glass-bg: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.1);
+      }
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+
+      /* --- LANGUAGE SWITCHER CSS --- */
+      body[data-lang="en"] .lang-es {
+        display: none !important;
+      }
+      body[data-lang="es"] .lang-en {
+        display: none !important;
+      }
+
+      .bg-glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        filter: blur(120px);
+        z-index: -1;
+        opacity: 0.5;
+      }
+      .glow-1 {
+        top: -100px;
+        left: -100px;
+        background: var(--neon-pink);
+      }
+      .glow-2 {
+        bottom: -100px;
+        right: -100px;
+        background: var(--neon-blue);
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 15px 30px;
+        background: rgba(5, 5, 5, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        border-bottom: 1px solid var(--glass-border);
+        box-sizing: border-box;
+      }
+      nav a {
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        font-size: 0.9rem;
+      }
+      nav a:hover {
+        color: var(--neon-blue);
+      }
+
+      .lang-dropdown {
+        position: absolute; /* Takes it out of the flex flow so it doesn't push the links */
+        right: 30px; /* Pins it neatly to the right edge */
+        width: auto;
+        margin-top: 0;
+        background: rgba(0, 0, 0, 0.5);
+        color: var(--neon-blue);
+        border: 1px solid var(--neon-blue);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        cursor: pointer;
+        outline: none;
+      }
+
+      section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 100px 20px 60px;
+      }
+      .container {
+        width: 100%;
+        max-width: 1400px;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        text-align: center;
+        margin-bottom: 20px;
+        background: -webkit-linear-gradient(
+          0deg,
+          var(--neon-blue),
+          var(--neon-pink)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      h2 {
+        font-size: 2rem;
+        color: var(--neon-green);
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: 10px;
+      }
+      h3 {
+        font-size: 1.2rem;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+      }
+
+      .glass-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        transition: 0.3s;
+        margin-bottom: 20px;
+      }
+      .glass-card:hover {
+        border-color: var(--neon-blue);
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .card-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #aaa;
+      }
+      .card-symbol {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+      .metric-title {
+        color: #aaa;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .metric-val {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 10px 0;
+      }
+      .pos {
+        color: var(--neon-green);
+        font-size: 1.2rem;
+      }
+      .neg {
+        color: var(--neon-pink);
+        font-size: 1.2rem;
+      }
+
+      .table-container {
+        overflow-x: auto;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid var(--glass-border);
+        background: rgba(0, 0, 0, 0.3);
+        margin-top: 10px;
+      }
+      .cyber-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.95rem;
+        color: #e0e0e0;
+      }
+      .cyber-table th {
+        background: rgba(0, 255, 255, 0.05);
+        padding: 15px;
+        border-bottom: 2px solid var(--neon-blue);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.85rem;
+      }
+      .cyber-table td {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        white-space: nowrap;
+      }
+      .cyber-table tr:hover td {
+        background: rgba(57, 255, 20, 0.05);
+      }
+
+      select,
+      input[type="range"] {
+        width: 100%;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--neon-blue);
+        color: white;
+        border-radius: 8px;
+        margin-top: 10px;
+        outline: none;
+        font-family: "Space Grotesk";
+      }
+
+      .cyber-img-container {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid;
+        box-shadow: 0 0 15px;
+        margin-bottom: 20px;
+        transition: all 0.4s ease;
+      }
+      .cyber-img-container:hover {
+        transform: translateY(-5px);
+      }
+
+      .hidden-element {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+      }
+      .show-element {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- CAROUSEL / SLIDER STYLES --- */
+      .slider-container {
+        position: relative;
+        width: 100%;
+        max-width: 950px;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 20px 10px;
+      }
+      .slider-track {
+        display: flex;
+        width: 100%;
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+      .slider-card,
+      .rec-slider-card {
+        min-width: 100%;
+        box-sizing: border-box;
+        opacity: 0.3;
+        transform: scale(0.95);
+        transition: all 0.6s ease;
+      }
+      .slider-card.active,
+      .rec-slider-card.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .card-split {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        text-align: left;
+      }
+      .card-text {
+        flex: 1;
+      }
+      .card-media {
+        width: 260px;
+        height: 260px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.15);
+        transition: all 0.3s ease;
+      }
+      .glass-card:hover .card-media {
+        border-color: var(--neon-blue);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        transform: scale(1.02);
+      }
+      .card-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .slider-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 10px;
+      }
+      .slide-btn {
+        background: transparent;
+        border: 1px solid var(--neon-blue);
+        color: var(--neon-blue);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+      .slide-btn:hover {
+        background: rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 10px var(--neon-blue);
+      }
+      .slider-dots {
+        display: flex;
+        gap: 12px;
+      }
+      .dot,
+      .rec-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .dot.active {
+        background: var(--neon-pink);
+        box-shadow: 0 0 10px var(--neon-pink);
+      }
+      .rec-dot.active {
+        background: var(--neon-blue);
+        box-shadow: 0 0 10px var(--neon-blue);
+      }
+      @media (max-width: 850px) {
+        .card-split {
+          flex-direction: column-reverse;
+          align-items: center;
+        }
+        .card-media {
+          width: 100%;
+          max-width: 400px;
+          height: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body data-lang="en">
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <nav>
+      <a href="#about"
+        ><span class="lang-en">Story</span
+        ><span class="lang-es">Historia</span></a
+      >
+      <a href="#us-market"
+        ><span class="lang-en">US Market Hub</span
+        ><span class="lang-es">Mercado EE.UU.</span></a
+      >
+      <a href="#es-market"
+        ><span class="lang-en">ES Market Hub</span
+        ><span class="lang-es">Mercado España</span></a
+      >
+      <a href="#trump"
+        ><span class="lang-en">Trumps' Drama Analysis</span
+        ><span class="lang-es">Análisis del Drama de Trump</span></a
+      >
+      <a href="#predict"
+        ><span class="lang-en">Forecast Simulator</span
+        ><span class="lang-es">Simulador de Futuro</span></a
+      >
+      <a href="#bias"
+        ><span class="lang-en">Stress Test</span
+        ><span class="lang-es">Prueba de Estrés</span></a
+      >
+      <a href="#recommendations"
+        ><span class="lang-en">Recommendations</span
+        ><span class="lang-es">Recomendaciones</span></a
+      >
+
+      <select class="lang-dropdown" onchange="changeLanguage(this.value)">
+        <option value="en">🇬🇧 English</option>
+        <option value="es">🇪🇸 Español</option>
+      </select>
+    </nav>
+
+    <section id="about">
+      <div class="container hidden-element">
+        <h1>
+          <span class="lang-en"
+            >The Global Contagion Effect: How Trump's Trade War affects
+            Spain</span
+          >
+          <span class="lang-es"
+            >El Efecto Contagio: Cómo la Guerra Comercial de Trump Afecta a
+            España</span
+          >
+        </h1>
+
+        <div class="slider-container" id="story-slider-container">
+          <div class="slider-track" id="story-slider-track">
+            <div class="glass-card slider-card active">
+              <div class="card-split">
+                <div class="card-text">
+                  <h2>
+                    <span class="lang-en">Tension Starting Point</span>
+                    <span class="lang-es">Dónde Empieza el Drama</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Trump threatens tariffs on Spanish exports and criticizes
+                      Spain’s trade balance and defense spending.</span
+                    >
+                    <span class="lang-es"
+                      >Trump amenaza con clavar aranceles a las exportaciones
+                      españolas y critica lo poco que gasta España en
+                      defensa.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >Spain rejects the claims, while the EU immediately
+                      signals unified support and possible retaliation.</span
+                    >
+                    <span class="lang-es"
+                      >España pasa del tema, mientras la UE avisa que si hay
+                      bronca, están unidos y listos para devolver el
+                      golpe.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >Markets react with uncertainty as investors fear
+                      escalating US–EU trade tensions.</span
+                    >
+                    <span class="lang-es"
+                      >Los inversores entran en pánico porque ven venir una
+                      guerra comercial a lo grande entre EE.UU. y Europa.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >Spain faces indirect pressure through trade exposure,
+                      investment flows, and financial market volatility.</span
+                    >
+                    <span class="lang-es"
+                      >España empieza a ahogarse indirectamente porque su bolsa
+                      y sus exportaciones dependen de que haya paz.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >The episode highlights how political rhetoric can quickly
+                      transmit into economic risk across borders.</span
+                    >
+                    <span class="lang-es"
+                      >Esto demuestra que cuando los políticos hablan por
+                      hablar, el peligro para tu cartera se vuelve muy
+                      real.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='fight.jpg') }}"
+                    alt="Political Rhetoric Showdown"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card slider-card">
+              <div class="card-split">
+                <div class="card-text">
+                  <h2>
+                    <span class="lang-en">Why Does Spain Care?</span>
+                    <span class="lang-es">¿Por Qué le Importa a España?</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Spain is directly exposed because it is targeted by U.S.
+                      tariff threats, which put its exports and key industries
+                      at risk.</span
+                    >
+                    <span class="lang-es"
+                      >España está en la línea de fuego. Las amenazas de
+                      aranceles de EE.UU. ponen en riesgo las industrias que más
+                      dinero dejan al país.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >These threats quickly spill into financial markets,
+                      affecting investment, currency stability, and business
+                      confidence in Spain.</span
+                    >
+                    <span class="lang-es"
+                      >Ese miedo salta rapidísimo a la bolsa, afectando la pasta
+                      que invierten las empresas y hundiendo la confianza.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >As a result, political tension with the U.S. becomes an
+                      immediate economic risk rather than a distant diplomatic
+                      issue.</span
+                    >
+                    <span class="lang-es"
+                      >Resultado: un berrinche político al otro lado del océano
+                      se vuelve un peligro económico instantáneo.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >This raises an important economic question:<br /><strong
+                        >Why can a political speech in Washington affect jobs
+                        and stock prices in Madrid?</strong
+                      ></span
+                    >
+                    <span class="lang-es"
+                      >Ahí viene la gran pregunta:<br /><strong
+                        >¿Por qué un político soltando mierda en Washington
+                        puede joder empleos y la bolsa en Madrid?</strong
+                      ></span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='clash.jpg') }}"
+                    alt="Tariffs vs EU Clash"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card slider-card">
+              <div class="card-split">
+                <div class="card-text">
+                  <h2>
+                    <span class="lang-en">When Did it Start?</span>
+                    <span class="lang-es">¿Cuándo Empezó Todo Esto?</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Imagine standing in Madrid watching markets react to news
+                      from the United States.</span
+                    >
+                    <span class="lang-es"
+                      >Imagínate estar en Madrid viendo cómo nuestra bolsa
+                      reacciona a los titulares de Estados Unidos.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >As an economist, I explored how financial shocks move
+                      between the United States and Spain through historical
+                      contagion patterns.</span
+                    >
+                    <span class="lang-es"
+                      >Como economista, me puse a investigar cómo los shocks
+                      financieros viajan entre EE.UU. y España a lo largo de la
+                      historia.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >My hypothesis was that
+                      <strong
+                        >“if Wall Street sneezes, global markets catch a
+                        flu”</strong
+                      >, meaning U.S. shocks can spread rapidly across
+                      international economies.</span
+                    >
+                    <span class="lang-es"
+                      >Mi teoría es simple:
+                      <strong
+                        >"si Wall Street estornuda, el resto del mundo pilla la
+                        gripe"</strong
+                      >. Los problemas yankis se contagian súper rápido.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >I tested this idea using the 2008 financial crisis as the
+                      main case study.</span
+                    >
+                    <span class="lang-es"
+                      >Puse a prueba esta idea estudiando a fondo el desastre de
+                      la crisis financiera de 2008.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >The crisis offers a clear example of how U.S.-origin
+                      shocks transmit globally and affect economies like
+                      Spain.</span
+                    >
+                    <span class="lang-es"
+                      >Esa crisis es el ejemplo perfecto de cómo un problema
+                      100% americano terminó hundiendo la economía de
+                      España.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='Anas.jpg') }}"
+                    alt="Macroeconomic Analysis Trends"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card slider-card">
+              <div class="card-split">
+                <div class="card-text">
+                  <h2>
+                    <span class="lang-en">The Financial Apocalypse: 2008</span>
+                    <span class="lang-es">El Apocalipsis Financiero: 2008</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >To understand contagion, we must travel back to the
+                      Global Financial Crisis of 2008.</span
+                    >
+                    <span class="lang-es"
+                      >Para pillar bien esto del "contagio", hay que viajar al
+                      pasado: la crisis mundial de 2008.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >The crisis began in the United States housing and banking
+                      sectors but rapidly spread across the world. Spain became
+                      one of the countries most severely affected.</span
+                    >
+                    <span class="lang-es"
+                      >Todo explotó en los bancos y las casas de Estados Unidos,
+                      pero se esparció por el planeta. España fue de las que
+                      peor acabó.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >The collapse of credit markets exposed weaknesses in
+                      world's real estate boom and construction sector.</span
+                    >
+                    <span class="lang-es"
+                      >Cuando cortaron el grifo del dinero, se descubrió que el
+                      boom de la construcción y las casas aquí era de
+                      papel.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='Wallstreet.jpg') }}"
+                    alt="Wall Street Fall 2008"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card slider-card">
+              <div class="card-split">
+                <div class="card-text">
+                  <h2>
+                    <span class="lang-en"
+                      >Spain Before and After the Crisis</span
+                    >
+                    <span class="lang-es"
+                      >España Antes y Después de la Crisis</span
+                    >
+                  </h2>
+                  <div class="grid-2" style="gap: 20px; margin-bottom: 15px">
+                    <div>
+                      <h3 style="margin-top: 0">
+                        <span class="lang-en">Before 2008</span>
+                        <span class="lang-es">Antes de 2008</span>
+                      </h3>
+                      <ul style="padding-left: 20px; margin: 0">
+                        <li>
+                          <span class="lang-en"
+                            >Strong economic expansion (GDP ~2.5%–4%)</span
+                          >
+                          <span class="lang-es"
+                            >Economía a tope (PIB crecía ~2.5%–4%)</span
+                          >
+                        </li>
+                        <li>
+                          <span class="lang-en"
+                            >Housing and construction boom</span
+                          >
+                          <span class="lang-es"
+                            >Locura por construir casas</span
+                          >
+                        </li>
+                        <li>
+                          <span class="lang-en"
+                            >House prices rose ~150%–200% in Spain</span
+                          >
+                          <span class="lang-es"
+                            >Comprar casa subió un ~150%–200%</span
+                          >
+                        </li>
+                        <li>
+                          <span class="lang-en"
+                            >Unemployment relatively moderate (~7%–9%)</span
+                          >
+                          <span class="lang-es"
+                            >El paro estaba bastante "chill" (~7%–9%)</span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 style="margin-top: 0">
+                        <span class="lang-en">After 2008</span>
+                        <span class="lang-es">Después de 2008</span>
+                      </h3>
+                      <ul style="padding-left: 20px; margin: 0">
+                        <li>
+                          <span class="lang-en"
+                            >Sharp recession (GDP ~-4% in 2009 EU)</span
+                          >
+                          <span class="lang-es"
+                            >Recesión brutal (PIB hundido un ~-4%)</span
+                          >
+                        </li>
+                        <li>
+                          <span class="lang-en">Banking and credit crisis</span>
+                          <span class="lang-es"
+                            >Crisis de bancos y cero créditos</span
+                          >
+                        </li>
+                        <li>
+                          <span class="lang-en"
+                            >Housing prices fell ~25%–40%</span
+                          >
+                          <span class="lang-es"
+                            >Las casas perdieron un ~25%–40% de valor</span
+                          >
+                        </li>
+                        <li>
+                          <span class="lang-en"
+                            >Unemployment surged (~26% Spain, youth >50%)</span
+                          >
+                          <span class="lang-es"
+                            >Paro por las nubes (~26% general, joven >50%)</span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <p>
+                    <span class="lang-en"
+                      >Understanding that historical contagion helps explain why
+                      investors remain sensitive today when trade tensions
+                      emerge between the United States and Europe.</span
+                    >
+                    <span class="lang-es"
+                      >Entender que este contagio ya pasó nos explica por qué
+                      los inversores siguen tan paranoicos hoy en día cuando hay
+                      roces entre EE.UU. y Europa.</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      text-align: center;
+                      font-size: 2.2rem;
+                      font-weight: 700;
+                      color: var(--neon-blue);
+                      text-shadow:
+                        0 0 10px var(--neon-blue),
+                        0 0 20px rgba(0, 255, 255, 0.5);
+                      margin-top: 30px;
+                      text-transform: uppercase;
+                      letter-spacing: 2px;
+                    "
+                  >
+                    <span class="lang-en">From Here We Can Start</span>
+                    <span class="lang-es">DESDE AQUÍ EMPEZAMOS</span>
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='madrid.jpg') }}"
+                    alt="Bolsa de Madrid Impact"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-controls">
+          <button class="slide-btn" onclick="moveSlide(-1)">&#10094;</button>
+          <div class="slider-dots">
+            <span class="dot active" onclick="setSlide(0)"></span>
+            <span class="dot" onclick="setSlide(1)"></span>
+            <span class="dot" onclick="setSlide(2)"></span>
+            <span class="dot" onclick="setSlide(3)"></span>
+            <span class="dot" onclick="setSlide(4)"></span>
+          </div>
+          <button class="slide-btn" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="us-market">
+      <div class="container hidden-element">
+        <h1>
+          <span class="lang-en">United States Market Hub</span>
+          <span class="lang-es">Centro de Mercado: EE.UU.</span>
+        </h1>
+        <h2 style="color: var(--neon-blue)">
+          <span class="lang-en">US Benchmarks</span>
+          <span class="lang-es">Referencias Yankis</span>
+        </h2>
+        <h3>
+          <span class="lang-en">The Big Board</span>
+          <span class="lang-es">Panel Principal</span>
+        </h3>
+        <div class="grid-3">
+          {% for card in us_bigboard %}
+          <div class="glass-card">
+            <div class="card-header">
+              <span class="card-title">{{card.title}}</span
+              ><span class="card-symbol">{{card.symbol}}</span>
+            </div>
+            <div class="metric-val">{{card.currency}}{{card.price}}</div>
+            <div class="{{card.color_class}}">
+              {{card.change}} ({{card.pct}})
+            </div>
+            <div style="margin-top: 10px">{{card.chart|safe}}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <h3>
+          <span class="lang-en">Corporate Valuations</span>
+          <span class="lang-es">Valoración de Empresas</span>
+        </h3>
+        <div class="grid-4">
+          {% for card in us_momentum %}
+          <div class="glass-card">
+            <div class="card-header">
+              <span class="card-title">{{card.title}}</span
+              ><span class="card-symbol">{{card.symbol}}</span>
+            </div>
+            <div class="metric-val" style="font-size: 1.8rem">
+              {{card.currency}}{{card.price}}
+            </div>
+            <div class="{{card.color_class}}">
+              {{card.change}} ({{card.pct}})
+            </div>
+            <div style="margin-top: 10px">{{card.chart|safe}}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <h3>
+          <span class="lang-en">Macro Fundamentals</span>
+          <span class="lang-es">Datos Macro</span>
+        </h3>
+        <div class="table-container">{{ us_table|safe }}</div>
+      </div>
+    </section>
+
+    <section id="es-market">
+      <div class="container hidden-element">
+        <h1>
+          <span class="lang-en">Spain Market Hub</span>
+          <span class="lang-es">Centro de Mercado: España</span>
+        </h1>
+        <h2 style="color: var(--neon-pink)">
+          <span class="lang-en">Spanish Benchmarks</span>
+          <span class="lang-es">Referencias Españolas </span>
+        </h2>
+        <h3>
+          <span class="lang-en">The Big Board</span>
+          <span class="lang-es">Panel Principal</span>
+        </h3>
+        <div class="grid-3">
+          {% for card in es_bigboard %}
+          <div class="glass-card" style="border-color: var(--neon-pink)">
+            <div class="card-header">
+              <span class="card-title">{{card.title}}</span
+              ><span class="card-symbol">{{card.symbol}}</span>
+            </div>
+            <div class="metric-val">{{card.currency}}{{card.price}}</div>
+            <div class="{{card.color_class}}">
+              {{card.change}} ({{card.pct}})
+            </div>
+            <div style="margin-top: 10px">{{card.chart|safe}}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <h3>
+          <span class="lang-en">Corporate Valuations</span>
+          <span class="lang-es">Valoración de Empresas</span>
+        </h3>
+        <div class="grid-4">
+          {% for card in es_momentum %}
+          <div class="glass-card" style="border-color: var(--neon-pink)">
+            <div class="card-header">
+              <span class="card-title">{{card.title}}</span
+              ><span class="card-symbol">{{card.symbol}}</span>
+            </div>
+            <div class="metric-val" style="font-size: 1.8rem">
+              {{card.currency}}{{card.price}}
+            </div>
+            <div class="{{card.color_class}}">
+              {{card.change}} ({{card.pct}})
+            </div>
+            <div style="margin-top: 10px">{{card.chart|safe}}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <h3>
+          <span class="lang-en">Macro Fundamentals</span>
+          <span class="lang-es">Datos Macro</span>
+        </h3>
+        <div class="table-container">{{ es_table|safe }}</div>
+      </div>
+    </section>
+
+    <section id="trump">
+      <div class="container hidden-element">
+        <h2 style="color: var(--neon-pink)">
+          <span class="lang-en">Trumps' Drama Analysis</span>
+          <span class="lang-es">Análisis del Drama de Trump</span>
+        </h2>
+        <p style="color: #aaa; font-size: 1.1rem; margin-bottom: 30px">
+          <span class="lang-en"
+            >Tracking the mathematical drawdown on Spanish capital caused
+            directly by Trumps' rhetoric.</span
+          >
+          <span class="lang-es"
+            >Rastreando matemáticamente cómo las palabras de Trump hunden la
+            pasta en España.</span
+          >
+        </p>
+
+        <div
+          class="grid-1"
+          style="display: flex; flex-direction: column; gap: 60px"
+        >
+          <div>
+            <h3 style="color: var(--neon-blue)">
+              <span class="lang-en"
+                >First Administration Cycle (2016-2020)</span
+              >
+              <span class="lang-es">Primer Mandato (2016-2020)</span>
+            </h3>
+            <div
+              class="cyber-img-container"
+              style="
+                border-color: var(--neon-blue);
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.5);
+              "
+            >
+              <div id="chart_era1" style="height: 400px"></div>
+            </div>
+            <div class="table-container">{{ trump.table1|safe }}</div>
+          </div>
+
+          <div>
+            <h3 style="color: var(--neon-pink)">
+              <span class="lang-en"
+                >Active Administration Cycle (2025-Present)</span
+              >
+              <span class="lang-es">Mandato Actual (2025-Presente)</span>
+            </h3>
+            <div
+              class="cyber-img-container"
+              style="
+                border-color: var(--neon-pink);
+                box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.5);
+              "
+            >
+              <div id="chart_era2" style="height: 400px"></div>
+            </div>
+            <div class="table-container">{{ trump.table2|safe }}</div>
+          </div>
+
+          <div>
+            <h3 style="color: var(--neon-green)">
+              <span class="lang-en">Correlation Matrix</span>
+              <span class="lang-es">Matriz de Correlación</span>
+            </h3>
+            <div
+              class="cyber-img-container"
+              style="
+                border-color: var(--neon-green);
+                box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.5);
+              "
+            >
+              <div id="chart_matrix" style="height: 400px"></div>
+            </div>
+            <p style="color: #aaa; text-align: center; margin-top: 10px">
+              <span class="lang-en"
+                >Proving correlation: Mapping the US Reaction (S&P 500) vs
+                Spanish Response (IBEX 35).</span
+              >
+              <span class="lang-es"
+                >Demostrando la conexión: Reacción EE.UU. (S&P 500) vs Respuesta
+                España (IBEX 35).</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="predict">
+      <div class="container hidden-element">
+        <h2 style="color: var(--neon-blue)">
+          <span class="lang-en">Forecast Simulator</span>
+          <span class="lang-es">Simulador de Futuro</span>
+        </h2>
+        <div class="glass-card">
+          <div class="grid-3">
+            <div>
+              <label class="metric-title">
+                <span class="lang-en">Global Health</span>
+                <span class="lang-es">Salud Global</span>
+              </label>
+              <select id="p_mood" onchange="updatePredict()">
+                <option
+                  value="Strong Growth (Bull Market)"
+                  data-lang-en="Strong Growth (Bull Market)"
+                  data-lang-es="Crecimiento Fuerte (Alcista)"
+                >
+                  Strong Growth (Bull Market)
+                </option>
+                <option
+                  value="Normal / Stable Growth"
+                  data-lang-en="Normal / Stable Growth"
+                  data-lang-es="Crecimiento Normal / Estable"
+                  selected
+                >
+                  Normal / Stable Growth
+                </option>
+                <option
+                  value="Slowing Down (Recession Risk)"
+                  data-lang-en="Slowing Down (Recession Risk)"
+                  data-lang-es="Frenazo (Riesgo de Recesión)"
+                >
+                  Slowing Down (Recession Risk)
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="metric-title">
+                <span class="lang-en">US Political Risk</span>
+                <span class="lang-es">Riesgo Político EE.UU.</span>
+              </label>
+              <select id="p_risk" onchange="updatePredict()">
+                <option
+                  value="Calm / No New Tariffs"
+                  data-lang-en="Calm / No New Tariffs"
+                  data-lang-es="Tranquilidad / Sin Aranceles"
+                >
+                  Calm / No New Tariffs
+                </option>
+                <option
+                  value="Mild Trade Friction"
+                  data-lang-en="Mild Trade Friction"
+                  data-lang-es="Roce Comercial Leve"
+                  selected
+                >
+                  Mild Trade Friction
+                </option>
+                <option
+                  value="Severe Standoff"
+                  data-lang-en="Severe Standoff"
+                  data-lang-es="Conflicto Grave"
+                >
+                  Severe Standoff
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="metric-title">
+                <span class="lang-en">Years:</span>
+                <span class="lang-es">Años:</span>
+                <span id="p_yr_lbl" style="color: var(--neon-blue)">2</span>
+              </label>
+              <input
+                type="range"
+                id="p_time"
+                min="1"
+                max="3"
+                value="2"
+                oninput="
+                  document.getElementById('p_yr_lbl').innerText = this.value;
+                  updatePredict();
+                "
+              />
+            </div>
+          </div>
+          <div class="grid-3" style="margin-top: 30px">
+            <div
+              style="
+                border-left: 4px solid var(--neon-blue);
+                padding-left: 15px;
+              "
+            >
+              <div class="metric-title">
+                <span class="lang-en">Most Likely Outcome</span>
+                <span class="lang-es">Lo Más Probable</span>
+              </div>
+              <div id="p_exp" class="metric-val">
+                <span class="lang-en">Loading...</span
+                ><span class="lang-es">Cargando...</span>
+              </div>
+            </div>
+            <div
+              style="
+                border-left: 4px solid var(--neon-pink);
+                padding-left: 15px;
+              "
+            >
+              <div class="metric-title">
+                <span class="lang-en">Structural Risk Boundary</span>
+                <span class="lang-es">Límite de Riesgo Real</span>
+              </div>
+              <div
+                id="p_dng"
+                class="metric-val"
+                style="color: var(--neon-pink)"
+              >
+                <span class="lang-en">Loading...</span
+                ><span class="lang-es">Cargando...</span>
+              </div>
+            </div>
+          </div>
+          <div id="chart_predict" style="height: 400px; margin-top: 20px"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="bias">
+      <div class="container hidden-element">
+        <h2 style="color: var(--neon-green)">
+          <span class="lang-en">Cognitive Bias & Stress Testing</span>
+          <span class="lang-es">Sesgos Mentales y Prueba de Estrés</span>
+        </h2>
+        <p style="color: #aaa; font-size: 1.1rem; margin-bottom: 30px">
+          <span class="lang-en"
+            >Revealing hidden risks by testing "best-case" predictions against
+            worst-case disasters and rare, unexpected events.</span
+          >
+          <span class="lang-es"
+            >Descubriendo riesgos ocultos al enfrentar planes "súper optimistas"
+            contra los peores desastres históricos posibles.</span
+          >
+        </p>
+        <div class="glass-card">
+          <div class="grid-3">
+            <div>
+              <label class="metric-title">
+                <span class="lang-en">Historical Lookback</span>
+                <span class="lang-es">Visión Histórica</span>
+              </label>
+              <select id="b_look" onchange="updateBias()">
+                <option
+                  value="Post-2016 (Calm/Liquidity)"
+                  data-lang-en="Post-2016 (Calm/Liquidity)"
+                  data-lang-es="Post-2016 (Calma/Liquidez)"
+                  selected
+                >
+                  Post-2016 (Calm/Liquidity)
+                </option>
+                <option
+                  value="20-Year (2008 Crisis Included)"
+                  data-lang-en="20-Year (2008 Crisis Included)"
+                  data-lang-es="20 Años (Crisis 2008 Incluida)"
+                >
+                  20-Year (2008 Crisis Included)
+                </option>
+                <option
+                  value="50-Year (Stagflation Included)"
+                  data-lang-en="50-Year (Stagflation Included)"
+                  data-lang-es="50 Años (Estanflación Incluida)"
+                >
+                  50-Year (Stagflation Included)
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="metric-title">
+                <span class="lang-en">Black Swan Injection</span>
+                <span class="lang-es">Ataque de "Cisne Negro"</span>
+              </label>
+              <select id="b_swan" onchange="updateBias()">
+                <option
+                  value="None"
+                  data-lang-en="None"
+                  data-lang-es="Ninguno"
+                  selected
+                >
+                  None
+                </option>
+                <option
+                  value="Global Pandemic"
+                  data-lang-en="Global Pandemic"
+                  data-lang-es="Pandemia Global"
+                >
+                  Global Pandemic
+                </option>
+                <option
+                  value="Eurozone Bank Failure"
+                  data-lang-en="Eurozone Bank Failure"
+                  data-lang-es="Caída de Banco Europeo"
+                >
+                  Eurozone Bank Failure
+                </option>
+                <option
+                  value="Gibraltar Blockade"
+                  data-lang-en="Gibraltar Blockade"
+                  data-lang-es="Bloqueo de Gibraltar"
+                >
+                  Gibraltar Blockade
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="metric-title">
+                <span class="lang-en">Threat Execution:</span>
+                <span class="lang-es">Nivel de la Amenaza:</span>
+                <span id="b_rt_lbl" style="color: var(--neon-green)">100</span>%
+              </label>
+              <input
+                type="range"
+                id="b_rate"
+                min="5"
+                max="100"
+                value="100"
+                step="5"
+                oninput="
+                  document.getElementById('b_rt_lbl').innerText = this.value;
+                  updateBias();
+                "
+              />
+            </div>
+          </div>
+          <div class="grid-3" style="margin-top: 30px">
+            <div
+              style="
+                border-left: 4px solid var(--neon-green);
+                padding-left: 15px;
+              "
+            >
+              <div class="metric-title">
+                <span class="lang-en">Reported Safety Floor (Biased)</span>
+                <span class="lang-es">Suelo Seguro (Muy Optimista)</span>
+              </div>
+              <div id="b_rvar" class="metric-val">
+                <span class="lang-en">Loading...</span
+                ><span class="lang-es">Cargando...</span>
+              </div>
+            </div>
+            <div
+              style="
+                border-left: 4px solid var(--neon-pink);
+                padding-left: 15px;
+              "
+            >
+              <div class="metric-title">
+                <span class="lang-en">True Safety Floor (Unbiased)</span>
+                <span class="lang-es">Suelo Seguro Real (Sin Filtros)</span>
+              </div>
+              <div
+                id="b_tvar"
+                class="metric-val"
+                style="color: var(--neon-pink)"
+              >
+                <span class="lang-en">Loading...</span
+                ><span class="lang-es">Cargando...</span>
+              </div>
+            </div>
+            <div
+              style="
+                background: rgba(255, 0, 127, 0.1);
+                padding: 15px;
+                border-radius: 8px;
+              "
+            >
+              <div class="metric-title" style="color: var(--neon-pink)">
+                <span class="lang-en">Hidden Corporate Blind Spot</span>
+                <span class="lang-es">El Punto Ciego de la Empresa</span>
+              </div>
+              <div id="b_blind" class="metric-val" style="color: white">
+                <span class="lang-en">Loading...</span
+                ><span class="lang-es">Cargando...</span>
+              </div>
+            </div>
+          </div>
+          <div id="chart_bias" style="height: 400px; margin-top: 20px"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recommendations">
+      <div class="container hidden-element">
+        <h1
+          style="
+            background: -webkit-linear-gradient(
+              0deg,
+              var(--neon-blue),
+              var(--neon-green)
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          "
+        >
+          <span class="lang-en">Strategic Recommendations</span>
+          <span class="lang-es">Recomendaciones Clave</span>
+        </h1>
+
+        <div class="slider-container" id="rec-slider-container">
+          <div class="slider-track" id="rec-slider-track">
+            <div
+              class="glass-card rec-slider-card active"
+              style="border-color: var(--neon-blue)"
+            >
+              <div class="card-split">
+                <div class="card-text">
+                  <h2 style="color: var(--neon-blue)">
+                    <span class="lang-en"> Check Your Blind Spots</span>
+                    <span class="lang-es"> Revisa Tus Puntos Ciegos</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Stop assuming everything will go perfectly. We need to
+                      test our plans against worst-case scenarios (like the 2008
+                      crash) to avoid being overly optimistic.</span
+                    >
+                    <span class="lang-es"
+                      >Deja de pensar que todo saldrá perfecto. Hay que probar
+                      los planes contra los peores escenarios (como el de 2008)
+                      para no pecar de ilusos.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >By figuring out exactly how low the market can drop,
+                      companies can set aside enough cash to survive
+                      international drama.</span
+                    >
+                    <span class="lang-es"
+                      >Calculando exactamente cuánto puede caer el mercado, las
+                      empresas pueden guardar suficiente pasta para sobrevivir
+                      al drama internacional.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='Anas.jpg') }}"
+                    alt="Data Analysis"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="glass-card rec-slider-card"
+              style="border-color: var(--neon-blue)"
+            >
+              <div class="card-split">
+                <div class="card-text">
+                  <h2 style="color: var(--neon-blue)">
+                    <span class="lang-en">Don't Rely Only on the US</span>
+                    <span class="lang-es">No Dependas Solo de EE.UU.</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Cut down on how much we depend on US politics. The data
+                      proves it: when Washington has drama, the Spanish market
+                      takes a hit.</span
+                    >
+                    <span class="lang-es"
+                      >Corta un poco el rollo con la política yanki. Los datos
+                      hablan: si Washington estornuda, el IBEX español lo paga
+                      caro.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >We need to spread out our trade and focus more on Europe
+                      or Asia. That way, random tariff threats won't wreck our
+                      economy.</span
+                    >
+                    <span class="lang-es"
+                      >Hay que diversificar y enfocarse más en Europa o Asia
+                      para que las amenazas random no destrocen nuestra
+                      economía.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='clash.jpg') }}"
+                    alt="Trade Diversification"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="glass-card rec-slider-card"
+              style="border-color: var(--neon-blue)"
+            >
+              <div class="card-split">
+                <div class="card-text">
+                  <h2 style="color: var(--neon-blue)">
+                    <span class="lang-en">Play Defense Early</span>
+                    <span class="lang-es">Juega a la Defensiva Temprano</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Use the data patterns we found. The stock market reacts
+                      the exact same way every time politicians start talking
+                      trash.</span
+                    >
+                    <span class="lang-es"
+                      >Usa los patrones de los datos. La bolsa reacciona siempre
+                      igual cada vez que los políticos se ponen a tirar mierda
+                      por televisión.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >When we hear rumors about new tariffs, we need to protect
+                      our investments <strong>before</strong> the actual market
+                      drop happens a few days later.</span
+                    >
+                    <span class="lang-es"
+                      >Cuando haya rumores de aranceles nuevos, protege la
+                      cartera de inversiones <strong>antes</strong> de que el
+                      mercado se estrelle unos días después.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='Wallstreet.jpg') }}"
+                    alt="Market Hedging"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="glass-card rec-slider-card"
+              style="border-color: var(--neon-blue)"
+            >
+              <div class="card-split">
+                <div class="card-text">
+                  <h2 style="color: var(--neon-blue)">
+                    <span class="lang-en">Focus on the Home Turf</span>
+                    <span class="lang-es">Enfócate en Casa</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >Save up cash and focus on businesses that make money
+                      right here in Spain without needing to rely on
+                      exports.</span
+                    >
+                    <span class="lang-es"
+                      >Haz caja y céntrate en negocios que hagan dinero aquí en
+                      España sin tener que mendigar exportaciones fuera.</span
+                    >
+                  </p>
+                  <p>
+                    <span class="lang-en"
+                      >Keeping things local acts like a shield. It makes sure
+                      Spanish jobs and projects survive when global trade wars
+                      break out.</span
+                    >
+                    <span class="lang-es"
+                      >Mantener todo más local funciona de escudo. Asegura que
+                      el curro y los proyectos en España sobrevivan cuando fuera
+                      hay una guerra.</span
+                    >
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='madrid.jpg') }}"
+                    alt="Domestic Fortification"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="glass-card rec-slider-card"
+              style="border-color: var(--neon-blue)"
+            >
+              <div class="card-split">
+                <div class="card-text">
+                  <h2 style="color: var(--neon-blue)">
+                    <span class="lang-en">Stay Flexible</span>
+                    <span class="lang-es">Mantente Flexible</span>
+                  </h2>
+                  <p>
+                    <span class="lang-en"
+                      >We can't control what US politicians say or do, but we
+                      can use data to make sure Spain is ready to absorb the
+                      hit, adapt quickly, and even win during the chaos.</span
+                    >
+                    <span class="lang-es"
+                      >No controlamos lo que hace EE.UU., pero podemos usar los
+                      datos para que España aguante el golpe, se adapte y hasta
+                      saque tajada del caos.</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      text-align: center;
+                      font-size: 2.2rem;
+                      font-weight: 700;
+                      color: var(--neon-pink);
+                      text-shadow:
+                        0 0 10px var(--neon-pink),
+                        0 0 20px rgba(255, 0, 127, 0.5);
+                      margin-top: 30px;
+                      text-transform: uppercase;
+                      letter-spacing: 2px;
+                    "
+                  >
+                    <span class="lang-en">PREPARE, DON'T PREDICT</span>
+                    <span class="lang-es">PREPÁRATE, NO ADIVINES</span>
+                  </p>
+                </div>
+                <div class="card-media">
+                  <img
+                    src="{{ url_for('static', filename='fight.jpg') }}"
+                    alt="Strategic Agility"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-controls">
+          <button class="slide-btn" onclick="moveRecSlide(-1)">&#10094;</button>
+          <div class="slider-dots">
+            <span class="rec-dot active" onclick="setRecSlide(0)"></span>
+            <span class="rec-dot" onclick="setRecSlide(1)"></span>
+            <span class="rec-dot" onclick="setRecSlide(2)"></span>
+            <span class="rec-dot" onclick="setRecSlide(3)"></span>
+            <span class="rec-dot" onclick="setRecSlide(4)"></span>
+          </div>
+          <button class="slide-btn" onclick="moveRecSlide(1)">&#10095;</button>
+        </div>
+      </div>
+    </section>
+
+    <script id="era1-data" type="application/json">
+      {{ trump.chart1 | tojson | safe }}
+    </script>
+    <script id="era2-data" type="application/json">
+      {{ trump.chart2 | tojson | safe }}
+    </script>
+    <script id="matrix-data" type="application/json">
+      {{ trump.chart3 | tojson | safe }}
+    </script>
+
+    <script>
+      // --- LANGUAGE SWITCHER LOGIC ---
+      function changeLanguage(lang) {
+        document.body.setAttribute("data-lang", lang);
+
+        // Dynamically update drop-down options without breaking the Python backend values
+        document.querySelectorAll("option[data-lang-en]").forEach((opt) => {
+          opt.innerText = opt.getAttribute(`data-lang-${lang}`);
+        });
+      }
+
+      // Call it once immediately to sync the dropdown text on first load
+      changeLanguage("en");
+
+      // --- STORY SLIDER LOGIC ---
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(
+        "#story-slider-track .slider-card",
+      );
+      const track = document.getElementById("story-slider-track");
+      const dots = document.querySelectorAll("#story-slider-container .dot");
+
+      function updateSlider() {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        slides.forEach((s, i) => {
+          if (i === currentSlide) s.classList.add("active");
+          else s.classList.remove("active");
+        });
+        dots.forEach((d, i) => {
+          if (i === currentSlide) d.classList.add("active");
+          else d.classList.remove("active");
+        });
+      }
+
+      function moveSlide(dir) {
+        currentSlide = (currentSlide + dir + slides.length) % slides.length;
+        updateSlider();
+      }
+
+      function setSlide(idx) {
+        currentSlide = idx;
+        updateSlider();
+      }
+
+      let slideInterval = setInterval(() => moveSlide(1), 20000);
+      const sliderContainer = document.getElementById("story-slider-container");
+      sliderContainer.addEventListener("mouseenter", () =>
+        clearInterval(slideInterval),
+      );
+      sliderContainer.addEventListener("mouseleave", () => {
+        slideInterval = setInterval(() => moveSlide(1), 20000);
+      });
+
+      // --- RECOMMENDATIONS SLIDER LOGIC ---
+      let recCurrentSlide = 0;
+      const recSlides = document.querySelectorAll(
+        "#rec-slider-track .rec-slider-card",
+      );
+      const recTrack = document.getElementById("rec-slider-track");
+      const recDots = document.querySelectorAll(
+        "#rec-slider-container .rec-dot",
+      );
+
+      function updateRecSlider() {
+        recTrack.style.transform = `translateX(-${recCurrentSlide * 100}%)`;
+        recSlides.forEach((s, i) => {
+          if (i === recCurrentSlide) s.classList.add("active");
+          else s.classList.remove("active");
+        });
+        recDots.forEach((d, i) => {
+          if (i === recCurrentSlide) d.classList.add("active");
+          else d.classList.remove("active");
+        });
+      }
+
+      function moveRecSlide(dir) {
+        recCurrentSlide =
+          (recCurrentSlide + dir + recSlides.length) % recSlides.length;
+        updateRecSlider();
+      }
+
+      function setRecSlide(idx) {
+        recCurrentSlide = idx;
+        updateRecSlider();
+      }
+
+      let recSlideInterval = setInterval(() => moveRecSlide(1), 20000);
+      const recSliderContainer = document.getElementById(
+        "rec-slider-container",
+      );
+      recSliderContainer.addEventListener("mouseenter", () =>
+        clearInterval(recSlideInterval),
+      );
+      recSliderContainer.addEventListener("mouseleave", () => {
+        recSlideInterval = setInterval(() => moveRecSlide(1), 20000);
+      });
+
+      // --- SCROLL ANIMATIONS ---
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("show-element");
+        });
+      });
+      document
+        .querySelectorAll(".hidden-element")
+        .forEach((el) => observer.observe(el));
+
+      // --- PLOTLY / BACKEND FETCH LOGIC ---
+      async function updatePredict() {
+        const res = await fetch("/api/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mood: document.getElementById("p_mood").value,
+            risk: document.getElementById("p_risk").value,
+            time: document.getElementById("p_time").value,
+          }),
+        });
+        const data = await res.json();
+
+        // Render raw numbers, no translation needed
+        document.getElementById("p_exp").innerText = data.expected;
+        document.getElementById("p_dng").innerText = data.danger;
+
+        Plotly.react("chart_predict", data.chart.data, data.chart.layout, {
+          displayModeBar: false,
+          responsive: true,
+        });
+      }
+
+      async function updateBias() {
+        const res = await fetch("/api/bias", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lookback: document.getElementById("b_look").value,
+            swan: document.getElementById("b_swan").value,
+            rate: document.getElementById("b_rate").value,
+          }),
+        });
+        const data = await res.json();
+
+        // Render raw numbers, no translation needed
+        document.getElementById("b_rvar").innerText = data.r_var;
+        document.getElementById("b_tvar").innerText = data.t_var;
+        document.getElementById("b_blind").innerText = data.blind;
+
+        Plotly.react("chart_bias", data.chart.data, data.chart.layout, {
+          displayModeBar: false,
+          responsive: true,
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const era1DataElement = document.getElementById("era1-data");
+        if (era1DataElement && era1DataElement.textContent.trim().length > 0) {
+          try {
+            let era1Data = JSON.parse(era1DataElement.textContent);
+            if (Object.keys(era1Data).length > 0)
+              Plotly.newPlot("chart_era1", era1Data.data, era1Data.layout, {
+                displayModeBar: false,
+                responsive: true,
+              });
+          } catch (e) {
+            console.error("Failed to parse Era 1 data", e);
+          }
+        }
+
+        const era2DataElement = document.getElementById("era2-data");
+        if (era2DataElement && era2DataElement.textContent.trim().length > 0) {
+          try {
+            let era2Data = JSON.parse(era2DataElement.textContent);
+            if (Object.keys(era2Data).length > 0)
+              Plotly.newPlot("chart_era2", era2Data.data, era2Data.layout, {
+                displayModeBar: false,
+                responsive: true,
+              });
+          } catch (e) {
+            console.error("Failed to parse Era 2 data", e);
+          }
+        }
+
+        const matrixDataElement = document.getElementById("matrix-data");
+        if (
+          matrixDataElement &&
+          matrixDataElement.textContent.trim().length > 0
+        ) {
+          try {
+            let matrixData = JSON.parse(matrixDataElement.textContent);
+            if (Object.keys(matrixData).length > 0)
+              Plotly.newPlot(
+                "chart_matrix",
+                matrixData.data,
+                matrixData.layout,
+                { displayModeBar: false, responsive: true },
+              );
+          } catch (e) {
+            console.error("Failed to parse Matrix data", e);
+          }
+        }
+
+        updatePredict();
+        updateBias();
+      });
+    </script>
+  </body>
+</html>
