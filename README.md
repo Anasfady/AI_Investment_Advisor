@@ -48,3 +48,34 @@ AI_INVESTMENT_ADVISOR/
 │   └── index.html          # Main frontend dashboard (HTML/CSS/JS)
 │
 └── README.md               # Project documentation
+
+
+
+🚀 How to Run Locally
+Clone or Download the Repository:
+Ensure you have all the files downloaded into a single folder on your machine.
+
+Activate your Virtual Environment (Recommended):
+
+Windows: .venv\Scripts\activate
+
+Mac/Linux: source .venv/bin/activate
+
+Install Dependencies:
+Make sure you have Flask, Pandas, and Plotly installed in your Python environment:
+
+Bash
+   pip install flask pandas plotly numpy
+Start the Server:
+Run the following command in your terminal:
+
+Bash
+   python app.py
+View the Dashboard:
+Open your web browser (Chrome, Safari, Edge) and go to:
+👉 http://127.0.0.1:5000
+
+🎨 UI & Design Notes
+Colors: The dashboard utilizes a strict dark-mode palette (#050505) accented with variables for Neon Blue (#00FFFF), Neon Pink (#FF007F), and Neon Green (#39FF14).
+
+Typography: Utilizes Google's Space Grotesk for a clean, modern, and slightly futuristic executive feel.
