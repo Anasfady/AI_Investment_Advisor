@@ -298,9 +298,9 @@ def api_predict():
         dng_p.append(dng_p[-1] * gf * np.exp(vol * np.sqrt(dt) * -1.5))
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=t_ax, y=opt_p, mode='lines+markers', name='Target Ceiling', line=dict(color='#39FF14', width=3)))
-    fig.add_trace(go.Scatter(x=t_ax, y=exp_p, mode='lines+markers', name='Baseline Expected Trend', line=dict(color='#00FFFF', width=4)))
-    fig.add_trace(go.Scatter(x=t_ax, y=dng_p, mode='lines+markers', name='Structural Risk Boundary', line=dict(color='#FF007F', width=3)))
+    fig.add_trace(go.Scatter(x=t_ax, y=opt_p, mode='lines+markers', name='Best Case Scenario', line=dict(color='#39FF14', width=3)))
+    fig.add_trace(go.Scatter(x=t_ax, y=exp_p, mode='lines+markers', name='Normal Case Scenario', line=dict(color='#00FFFF', width=4)))
+    fig.add_trace(go.Scatter(x=t_ax, y=dng_p, mode='lines+markers', name='Worst Case Scenario', line=dict(color='#FF007F', width=3)))
     
     fig.update_layout(
         plot_bgcolor='#050505', paper_bgcolor='#050505', font=dict(color='#E0E0E0', family="Space Grotesk"), 
