@@ -388,6 +388,67 @@
           height: 200px;
         }
       }
+      /* =========================================
+   MOBILE RESPONSIVENESS FOR RECOMMENDATIONS
+   ========================================= */
+      @media (max-width: 768px) {
+        /* Force the card to stack text on top, image on bottom */
+        .rec-slider-card .card-split {
+          display: flex;
+          flex-direction: column !important;
+          gap: 15px;
+        }
+
+        /* Make sure the text takes up the full width */
+        .rec-slider-card .card-text {
+          width: 100% !important;
+          padding: 10px;
+          text-align: left;
+        }
+
+        /* Shrink the headers and text so they fit the screen */
+        .rec-slider-card h2 {
+          font-size: 1.4rem !important;
+          margin-bottom: 10px;
+        }
+
+        .rec-slider-card p {
+          font-size: 0.95rem !important;
+          line-height: 1.4;
+        }
+
+        /* Make the "PREPARE, DON'T PREDICT" text fit */
+        .rec-slider-card p[style*="text-transform: uppercase"] {
+          font-size: 1.3rem !important;
+          margin-top: 15px !important;
+        }
+
+        /* Center the image and prevent it from being massive */
+        .rec-slider-card .card-media {
+          width: 100% !important;
+          display: flex;
+          justify-content: center;
+        }
+
+        .rec-slider-card .card-media img {
+          max-width: 100%;
+          height: auto;
+          max-height: 200px; /* Keeps the image from pushing the buttons off-screen */
+          object-fit: cover;
+          border-radius: 8px;
+        }
+
+        /* Make the navigation arrows and dots easier to tap on phones */
+        .slider-controls {
+          margin-top: 15px;
+          gap: 10px;
+        }
+
+        .slide-btn {
+          font-size: 1.5rem;
+          padding: 10px;
+        }
+      }
     </style>
   </head>
   <body data-lang="en">
@@ -566,7 +627,7 @@
                     <span class="lang-es"
                       >Ahí viene la gran pregunta:<br /><strong
                         >¿Por qué un político soltando mierda en Washington
-                        puede joder empleos y la bolsa en Madrid?</strong
+                        puede afecta empleos y la bolsa en Madrid?</strong
                       ></span
                     >
                   </p>
